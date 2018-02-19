@@ -11,9 +11,12 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
+import javax.validation.Valid;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Type;
+import org.hibernate.validator.constraints.NotBlank;
+import org.motechproject.mots.constants.ValidationMessages;
 import org.motechproject.mots.domain.enums.Status;
 
 @Entity
@@ -23,6 +26,7 @@ public class Course extends IvrObject {
   @Column(name = "name", nullable = false)
   @Getter
   @Setter
+  @NotBlank(message = ValidationMessages.EMPTY_COURSE_NAME)
   private String name;
 
   @Type(type = "text")
@@ -41,6 +45,7 @@ public class Course extends IvrObject {
   @OrderBy("module_number ASC")
   @Getter
   @Setter
+  @Valid
   private List<Module> modules;
 
   @Column(name = "version", nullable = false)
