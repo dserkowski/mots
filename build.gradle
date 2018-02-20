@@ -11,6 +11,10 @@ buildscript {
         classpath "com.moowork.gradle:gradle-node-plugin:1.2.0"
     }
 }
+//
+//ext {
+//    queryDslVersion = '3.6.3'
+//}
 
 plugins {
     id 'java'
@@ -20,6 +24,7 @@ plugins {
     id 'pmd'
     id 'com.moowork.node' version '1.2.0'
     id 'net.ltgt.apt' version '0.8'
+    id "com.ewerk.gradle.plugins.querydsl" version "1.0.9"
 }
 
 group 'org.motechproject.mots'
@@ -50,8 +55,12 @@ dependencies {
     compile 'org.apache.poi:poi-ooxml:3.17'
     compile "net.sf.jasperreports:jasperreports:6.5.1"
 
+//    compile "com.querydsl:querydsl-jpa:${queryDslVersion}"
+//    compile "com.querydsl:querydsl-apt:${queryDslVersion}:jpa"
+
     apt 'org.mapstruct:mapstruct-processor:1.2.0.Final'
     apt 'org.projectlombok:lombok:1.16.18'
+//    apt "com.querydsl:querydsl-apt:${queryDslVersion}"
 
     testCompile "junit:junit:4.12"
     testCompile "org.mockito:mockito-core:1.+"
@@ -108,3 +117,4 @@ pmd {
 }
 
 apply from: 'liquibase.gradle'
+apply from: 'gradle/querydsl.gradle'

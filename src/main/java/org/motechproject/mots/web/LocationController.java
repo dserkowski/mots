@@ -2,17 +2,22 @@ package org.motechproject.mots.web;
 
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import org.motechproject.mots.domain.Chiefdom;
 import org.motechproject.mots.domain.Community;
 import org.motechproject.mots.domain.District;
 import org.motechproject.mots.domain.Facility;
+import org.motechproject.mots.domain.Incharge;
 import org.motechproject.mots.dto.DistrictDto;
+import org.motechproject.mots.dto.InchargeDto;
 import org.motechproject.mots.dto.LocationPreviewDto;
 import org.motechproject.mots.mapper.LocationMapper;
+import org.motechproject.mots.service.InchargeService;
 import org.motechproject.mots.service.LocationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -23,6 +28,9 @@ public class LocationController extends BaseController {
 
   @Autowired
   private LocationService locationService;
+
+  @Autowired
+  private InchargeService inchargeService;
 
   private LocationMapper locationMapper = LocationMapper.INSTANCE;
 
@@ -35,6 +43,20 @@ public class LocationController extends BaseController {
   @ResponseBody
   public List<DistrictDto> getDistricts() {
     List<District> districts = locationService.getDistricts();
+
+    return locationMapper.toDistrictDtos(districts);
+  }
+
+  /**
+   * Get list of districts available for particular incharge.
+   * @return list of all districts
+   */
+  @RequestMapping(value = "/incharge/{id}/districts", method = RequestMethod.GET)
+  @ResponseStatus(HttpStatus.OK)
+  @ResponseBody
+  public List<DistrictDto> getDistrictsForIncharge(@PathVariable("id") UUID inchargeId) {
+    Incharge incharge = inchargeService.getIncharge(inchargeId);
+    List<District> districts = locationService.getDistrictsForIncharge(incharge);
 
     return locationMapper.toDistrictDtos(districts);
   }

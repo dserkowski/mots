@@ -5,6 +5,7 @@ import org.motechproject.mots.domain.Chiefdom;
 import org.motechproject.mots.domain.Community;
 import org.motechproject.mots.domain.District;
 import org.motechproject.mots.domain.Facility;
+import org.motechproject.mots.domain.Incharge;
 import org.motechproject.mots.repository.ChiefdomRepository;
 import org.motechproject.mots.repository.CommunityRepository;
 import org.motechproject.mots.repository.DistrictRepository;
@@ -31,6 +32,13 @@ public class LocationService {
     return districtRepository.findAllByOrderByNameAsc();
   }
 
+  public List<District> getDistrictsForIncharge(Incharge incharge) {
+    //districtRepository.findAll(QDistrict)
+    //return districtRepository.findAllByOrderByNameAsc();
+    //districtRepository.findAll(QDistrict)
+
+    return null;
+  }
 
   public List<Chiefdom> getChiefdoms() {
     return chiefdomRepository.findAll();
