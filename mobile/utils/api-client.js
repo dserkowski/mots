@@ -1,6 +1,8 @@
 import _ from 'lodash';
-import { AsyncStorage, Alert } from 'react-native';
+import React from 'react';
+import { AsyncStorage } from 'react-native';
 
+import Alert from '../components/Alert';
 import Config from '../config';
 import { signoutUser, useRefreshToken } from '../actions';
 import { dispatch } from '../App';
@@ -17,12 +19,14 @@ const getErrorMessage = (errorResponse) => {
   return '';
 };
 
-const getAlert = (title, message) => Alert.alert(
-  title,
-  message,
-  [{ text: 'OK' }],
-  { cancelable: false },
-);
+// const getAlert = (title, message) => Alert.alert(
+//   title,
+//   message,
+//   [{ text: 'OK' }],
+//   { cancelable: false },
+// );
+
+const getAlert = (title, message) => <Alert title={title} message={message} />;
 
 export default class ApiClient {
   static async handleError(error) {

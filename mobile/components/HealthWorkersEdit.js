@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { View, Text, ScrollView, Alert } from 'react-native';
+import { View, Text, ScrollView } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { initialize } from 'redux-form';
 
@@ -11,6 +11,7 @@ import { CHW_WRITE_AUTHORITY, hasAuthority } from '../utils/authorization';
 import formsStyles from '../styles/formsStyles';
 import apiClient from '../utils/api-client';
 import getContainerStyle from '../utils/styleUtils';
+import Alert from "./Alert";
 
 const { formHeader } = formsStyles;
 
@@ -37,35 +38,36 @@ class HealthWorkersEdit extends Component {
     Actions.chws();
   }
 
-  onSubmit(values) {
-    Alert.alert(
-      '',
-      'Are you sure to edit Community Health Worker?',
-      [{
-        text: 'Confirm',
-        onPress: () => {
-          this.setState({ loading: true });
-          this.props.saveHealthWorker(values, result => this.onSubmitSuccess(result));
-        },
-      },
-      {
-        text: 'Cancel',
-        onPress: () => {},
-      }],
-      { cancelable: false },
-    );
+  onSubmit() {
+    <Alert title="dasdasdasd" message="dasdasdada" />;
+    // Alert.alert(
+    //   '',
+    //   'Are you sure to edit Community Health Worker?',
+    //   [{
+    //     text: 'Confirm',
+    //     onPress: () => {
+    //       this.setState({ loading: true });
+    //       this.props.saveHealthWorker(values, result => this.onSubmitSuccess(result));
+    //     },
+    //   },
+    //   {
+    //     text: 'Cancel',
+    //     onPress: () => {},
+    //   }],
+    //   { cancelable: false },
+    // );
   }
 
   onSubmitSuccess(result) {
     this.setState({ loading: false });
-    if (result) {
-      Alert.alert(
-        'Success!',
-        'Health Worker has been successfully edited',
-        [{ text: 'OK', onPress: () => Actions.chws() }],
-        { cancelable: false },
-      );
-    }
+    // if (result) {
+    //   Alert.alert(
+    //     'Success!',
+    //     'Health Worker has been successfully edited',
+    //     [{ text: 'OK', onPress: () => Actions.chws() }],
+    //     { cancelable: false },
+    //   );
+    // }
   }
 
   fetchChw() {
