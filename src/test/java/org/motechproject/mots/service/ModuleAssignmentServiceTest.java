@@ -23,6 +23,7 @@ import org.motechproject.mots.domain.CommunityHealthWorker;
 import org.motechproject.mots.domain.Module;
 import org.motechproject.mots.domain.ModuleProgress;
 import org.motechproject.mots.domain.enums.ProgressStatus;
+import org.motechproject.mots.dto.DistrictAssignmentDto;
 import org.motechproject.mots.exception.EntityNotFoundException;
 import org.motechproject.mots.exception.IvrException;
 import org.motechproject.mots.exception.ModuleAssignmentException;
@@ -74,6 +75,8 @@ public class ModuleAssignmentServiceTest {
   private AssignedModules existingAssignedModules;
 
   private AssignedModules newAssignedModules;
+
+  private DistrictAssignmentDto districtAssignmentDto = new D;
 
   @Before
   public void setUp() {
@@ -166,6 +169,27 @@ public class ModuleAssignmentServiceTest {
     doThrow(new IvrException("message")).when(ivrService).addSubscriberToGroups(any(), any());
 
     moduleAssignmentService.assignModules(newAssignedModules);
+  }
+
+  @Test
+  public void shouldAssignModulesToDistrict() throws Exception {
+    when(moduleProgressRepository.findByCommunityHealthWorkerIdAndModuleId(any(), any()))
+        .thenReturn(Optional.of(getModuleProgress(ProgressStatus.NOT_STARTED)));
+
+    moduleAssignmentService.assignModulesToDistrict(newAssignedModules);
+
+    ArgumentCaptor<AssignedModules> assignedModulesCaptor= ArgumentCaptor.forClass(AssignedModules.class);
+    verify(assignedModulesRepository).save(assignedModulesCaptor.capture());
+    assertEquals(newAssignedModules.getModules(), assignedModulesCaptor.getValue().getModules());
+
+    verify(ivrService)
+        .addSubscriberToGroups(eq(CHW.getIvrId()), eq(Collections.singletonList(IVR_GROUP)));
+    verify(ivrService)
+        .removeSubscriberFromGroups(eq(CHW.getIvrId()), eq(Collections.singletonList(IVR_GROUP)));
+    verify(moduleProgressService)
+        .removeModuleProgresses(any(), eq(Collections.singleton(MODULE_1)));
+    verify(moduleProgressService)
+        .createModuleProgresses(any(), eq(Collections.singleton(MODULE_3)));
   }
 
   private ModuleProgress getModuleProgress(ProgressStatus status) {
